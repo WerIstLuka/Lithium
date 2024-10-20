@@ -1,5 +1,7 @@
 #!/bin/python3
 
+from lib.IsInt import IsInt
+
 def CheckInput(Input, Instructions):
 	LineCounter = 0
 	CalledFunctions = []
@@ -9,9 +11,9 @@ def CheckInput(Input, Instructions):
 			IsInstruction = False
 			for Instruction in Instructions:
 				if Word == Instruction[0]:
-					IsInstruction =  True
+					IsInstruction = True
 					break
 			if IsInstruction == False:
-				print(Word)
-			#word is not an instruction
+				if IsInt(Word) == False:
+					print(Word)
 		LineCounter += 1
