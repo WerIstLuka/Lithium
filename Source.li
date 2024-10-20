@@ -1,0 +1,10 @@
+# fibonacci counter
+
+mov $1 1		# 1 2 10
+mov $2 0		# 11 12 20
+Loop:
+	mov $out $1	# 21 22 23
+	add $2 $1	# 24 25 26
+	mov $out $2	# 27 28 29
+	add $1 $2	# 30 31 32
+jmp Loop		# 33 43
