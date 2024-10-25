@@ -2,19 +2,88 @@
 
 from lib.IsInt import IsInt
 
-def CheckInput(Input, Instructions):
-	LineCounter = 0
+def CheckArgument(Arguments,Word ,Line):
+	if Arguments == 0:
+		print(f"Argument not expected on line {Line}: {Word}")
+		quit()
+	return Arguments - 1
+
+def FunctionChecker(Called, Defined):
+	NotCalled = []
+	NotDefined = []
+	for D in Defined:
+		HasWord = False
+		for C in Called:
+			if D[0][:-1] == C[0]:
+				HasWord = True
+				continue
+		if HasWord == False:
+			print(f"Label \"{D[0][:-1]}\" was defined on line {D[1]} but was never called")
+	for C in Called:
+		HasWord = False
+		for D in Defined:
+			if C[0] == D[0][:-1]:
+				HasWord = True
+				continue
+			if HasWord == False:
+				print(f"Label \"{C[0]}\" was called on line {C[1]} but was never defined")
+				quit()
+
+def CheckInput(Input, Instructions, Registers):
+	LineCounter = 1
 	CalledFunctions = []
 	DefinedFunctions = []
+	UnknownWords = []
 	for Line in Input:
+		Arguments = 0
+		JumpInstruction = False
 		for Word in Line:
-			if Word[0] != "$" and IsInt(Word[1:]) == False:
-				if IsInt(Word) == False:
-					IsInstruction = False
-					for Instruction in Instructions:
-						if Word == Instruction[0]:
-							IsInstruction = True
+			if Word[0] == "$" and IsInt(Word[1:]) != "NaN":
+				Arguments = CheckArgument(Arguments, Word, LineCounter)
+			else:
+				if Word[1:] in Registers[0]:
+					Arguments = CheckArgument(Arguments, Word, LineCounter)
+				else:
+					if type(IsInt(Word)) == type(int()):
+						Arguments = CheckArgument(Arguments, Word, LineCounter)
+					else:
+						if Word[0] == "#":
 							break
-					if IsInstruction == False:
-						print(Word)
+						else:
+							if Word[-1] == ":":
+								DefinedFunctions.append([Word, LineCounter])
+							else:
+								IsInstruction = False
+								if Arguments != 0:
+									if JumpInstruction == True:
+										CalledFunctions.append([Word, LineCounter])
+										JumpInstruction = False
+										if Arguments != 2:
+											print(f"Operation not possible: {Word} on line {LineCounter}")
+											quit()
+										Arguments = 0
+									else:
+										print(f"Expected an argument on line: {LineCounter}")
+										quit()
+								for Instruction in Instructions:
+									if Word == Instruction[0]:
+										IsInstruction = True
+										Arguments = Instruction[2]
+										if Instruction[3] == "jump":
+											JumpInstruction = True
+										break
+								if IsInstruction == False:
+									UnknownWords.append([Word, LineCounter])
 		LineCounter += 1
+	for i in UnknownWords:
+		FoundWord = False
+		for CFunction in CalledFunctions:
+			if i[0] in CFunction:
+				FoundWord = True
+		for DFunction in DefinedFunctions:
+			if i[0] in DFunction:
+				FoundWord = True
+		if FoundWord == False:
+			print(f"Unknown word: {i[0]} on line: {i[1]}")
+			quit()
+	FunctionChecker(CalledFunctions, DefinedFunctions)

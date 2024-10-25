@@ -13,10 +13,10 @@ Instructions = [
 	["sub", 3, 2, "none"],
 	["inc", 4, 1, "none"],
 	["dec", 5, 1, "none"],
-	["jmp", 6, 1, "jump"],
-	["jov", 7, 1, "jump"],
-	["jnz", 8, 1, "jump"],
-	["jiz", 9, 1, "jump"],
+	["jmp", 6, 2, "jump"],
+	["jov", 7, 2, "jump"],
+	["jnz", 8, 2, "jump"],
+	["jiz", 9, 2, "jump"],
 	["ld", 10, 2, "none"],
 	["st", 11, 2, "back"],
 	["and", 12, 2, "none"],
@@ -27,6 +27,11 @@ Instructions = [
 	["shr", 17, 1, "none"],
 	["slp", 18, 1, "none"]]
 
+Registers = [
+	["out", "pc"],
+	[255, 254]
+]
+
 File = ReadFile("Source.li")
 print(File)
-CheckInput(File, Instructions)
+CheckInput(File, Instructions, Registers)
