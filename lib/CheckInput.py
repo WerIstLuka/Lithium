@@ -19,6 +19,14 @@ def FunctionChecker(Called, Defined):
 				continue
 		if HasWord == False:
 			print(f"Label \"{D[0][:-1]}\" was defined on line {D[1]} but was never called")
+		LineList = []
+		for i in Defined:
+			if D[0] == i[0]:
+				LineList.append(str(i[1]))
+		if len(LineList) != 1:
+			Lines = ", ".join(LineList)
+			print(f"Label \"{D[0]}\" was defined on lines: {Lines}")
+			quit()
 	for C in Called:
 		HasWord = False
 		for D in Defined:
