@@ -25,4 +25,3 @@ def IsInt(Num):
 				return int(Num, 2)
 		return "NaN"
 	return int(Num)
-IsInt("0x1")
