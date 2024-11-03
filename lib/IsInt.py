@@ -10,7 +10,7 @@ def IsInt(Num):
 			if Num[:2] == "0x":
 				try:
 					int(Num, 16)
-					Ishex = True
+					IsHex = True
 				except Exception:
 					return "NaN"
 			if Num[:2] == "0b":
@@ -25,3 +25,4 @@ def IsInt(Num):
 				return int(Num, 2)
 		return "NaN"
 	return int(Num)
+IsInt("0x1")
