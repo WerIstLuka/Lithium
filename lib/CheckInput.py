@@ -71,7 +71,7 @@ def CheckInput(Input, Instructions, Registers):
 											quit()
 										Arguments = 0
 									else:
-										print(f"Expected an argument on line: {LineCounter}")
+										print(f"Unexpected argument \"{Word}\"on line: {LineCounter}")
 										quit()
 								for Instruction in Instructions:
 									if Word == Instruction[0]:

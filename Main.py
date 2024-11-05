@@ -4,9 +4,10 @@
 
 from lib.ReadFile import ReadFile
 from lib.CheckInput import CheckInput
+from lib.SanitizeInput import Sanitizer
 
-#cpu arch
-#name, num, arguments, info
+# cpu arch
+# name, num, arguments, info
 Instructions = [
 	["mov", 1, 2, "none"],
 	["add", 2, 2, "none"],
@@ -27,11 +28,14 @@ Instructions = [
 	["shr", 17, 1, "none"],
 	["slp", 18, 1, "none"]]
 
+# [0] special registers, [1] addresses for special registers
+# [1] general purpose registers
 Registers = [
-	["out", "pc"],
-	[255, 254]
-]
+	["out", "pc", "NULL"],
+	[255, 254, 0],
+	[1, 15]]
 
 File = ReadFile("Source.li")
 print(File)
 CheckInput(File, Instructions, Registers)
+Sanitizer(File, Instructions, Registers)
