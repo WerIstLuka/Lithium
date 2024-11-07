@@ -9,8 +9,6 @@ def CheckArgument(Arguments,Word ,Line):
 	return Arguments - 1
 
 def FunctionChecker(Called, Defined):
-	NotCalled = []
-	NotDefined = []
 	for D in Defined:
 		HasWord = False
 		for C in Called:
@@ -38,40 +36,39 @@ def FunctionChecker(Called, Defined):
 				quit()
 
 def CheckInput(Input, Instructions, Registers):
-	LineCounter = 1
 	CalledFunctions = []
 	DefinedFunctions = []
 	UnknownWords = []
-	for Line in Input:
+	for LineCounter, Line in enumerate(Input):
 		Arguments = 0
 		JumpInstruction = False
 		for Word in Line:
 			if Word[0] == "$" and IsInt(Word[1:]) != "NaN":
-				Arguments = CheckArgument(Arguments, Word, LineCounter)
+				Arguments = CheckArgument(Arguments, Word, LineCounter+1)
 			else:
 				if Word[1:] in Registers[0]:
-					Arguments = CheckArgument(Arguments, Word, LineCounter)
+					Arguments = CheckArgument(Arguments, Word, LineCounter+1)
 				else:
 					if type(IsInt(Word)) == type(int()):
-						Arguments = CheckArgument(Arguments, Word, LineCounter)
+						Arguments = CheckArgument(Arguments, Word, LineCounter+1)
 					else:
 						if Word[0] == "#":
 							break
 						else:
 							if Word[-1] == ":":
-								DefinedFunctions.append([Word, LineCounter])
+								DefinedFunctions.append([Word, LineCounter+1])
 							else:
 								IsInstruction = False
 								if Arguments != 0:
 									if JumpInstruction == True:
-										CalledFunctions.append([Word, LineCounter])
+										CalledFunctions.append([Word, LineCounter+1])
 										JumpInstruction = False
 										if Arguments != 2:
-											print(f"Operation not possible: {Word} on line {LineCounter}")
+											print(f"Operation not possible: {Word} on line {LineCounter+1}")
 											quit()
 										Arguments = 0
 									else:
-										print(f"Unexpected argument \"{Word}\"on line: {LineCounter}")
+										print(f"Unexpected argument \"{Word}\"on line: {LineCounter+1}")
 										quit()
 								for Instruction in Instructions:
 									if Word == Instruction[0]:
@@ -82,7 +79,6 @@ def CheckInput(Input, Instructions, Registers):
 										break
 								if IsInstruction == False:
 									UnknownWords.append([Word, LineCounter])
-		LineCounter += 1
 	for i in UnknownWords:
 		FoundWord = False
 		for CFunction in CalledFunctions:

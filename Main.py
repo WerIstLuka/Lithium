@@ -38,4 +38,4 @@ Registers = [
 File = ReadFile("Source.li")
 print(File)
 CheckInput(File, Instructions, Registers)
-Sanitizer(File, Instructions, Registers)
+SanitizedFile, LineList = Sanitizer(File, Instructions, Registers)
