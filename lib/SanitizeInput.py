@@ -4,9 +4,8 @@ from lib.IsInt import IsInt
 
 def Sanitizer(Input, Instructions, Registers):
 	Output = []
-	for Line in Input:
-		if Line == []:
-			continue
+	LineList = []
+	for LineCount, Line in enumerate(Input):
 		OutputLine = []
 		for Word in Line:
 			if Word[0] == "#":
@@ -25,10 +24,8 @@ def Sanitizer(Input, Instructions, Registers):
 			OutputLine.append(Word)
 		if OutputLine == []:
 			continue
+		LineList.append(LineCount+1)
 		Output.append(OutputLine)
 		print(OutputLine)
-	return Output
-# todo
-# line count converter from sanitized file to source file
-# if line gets removed increment counter
-# have a list the length of the amount of lines in sanitized file and for each line have the number of skipped lines
+	print(LineList)
+	return Output, LineList
