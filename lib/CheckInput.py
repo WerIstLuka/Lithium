@@ -39,9 +39,13 @@ def CheckInput(Input, Instructions, Registers):
 	CalledFunctions = []
 	DefinedFunctions = []
 	UnknownWords = []
+	Arguments = 0
 	for LineCounter, Line in enumerate(Input):
-		Arguments = 0
+		#Arguments = 0
 		JumpInstruction = False
+		# if Arguments != 0:
+		# 	print(f"missing argument on line: {LineCounter+1}")
+		# 	quit()
 		for Word in Line:
 			if Word[0] == "$" and IsInt(Word[1:]) != "NaN":
 				Arguments = CheckArgument(Arguments, Word, LineCounter+1)
@@ -61,14 +65,11 @@ def CheckInput(Input, Instructions, Registers):
 								IsInstruction = False
 								if Arguments != 0:
 									if JumpInstruction == True:
+										Arguments = CheckArgument(Arguments, Word, LineCounter + 1)
 										CalledFunctions.append([Word, LineCounter+1])
 										JumpInstruction = False
-										if Arguments != 2:
-											print(f"Operation not possible: {Word} on line {LineCounter+1}")
-											quit()
-										Arguments = 0
 									else:
-										print(f"Unexpected argument \"{Word}\"on line: {LineCounter+1}")
+										print(f"Unexpected operation \"{Word}\" on line: {LineCounter+1}")
 										quit()
 								for Instruction in Instructions:
 									if Word == Instruction[0]:
