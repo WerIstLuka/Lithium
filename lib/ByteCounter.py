@@ -2,17 +2,19 @@
 
 from lib.IsInt import IsInt
 
-def ByteCounter(Input, Instructions):
+def ByteCounter(Input, Instructions, CPU):
 	ByteList = [0]
+	RegAddrByte = CPU["RegAddrSizeByte"]
+	WordSize = CPU["Bytes"]
 	for Line in Input:
 		IsJump = False
 		for Word in Line:
 			if IsInt(Word) != "NaN":
-				ByteList.append(ByteList[-1] + 8)
+				ByteList.append(ByteList[-1] + WordSize)
 				IsJump = False
 				continue
 			if Word[0] == "$":
-				ByteList.append(ByteList[-1] + 1)
+				ByteList.append(ByteList[-1] + RegAddrByte)
 				IsJump = False
 				continue
 			if IsJump == True:
